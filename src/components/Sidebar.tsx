@@ -28,14 +28,25 @@ import {
   ArchiveRestore,
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { SettingsPanel } from "./SettingsPanel";
 import Cookies from "js-cookie";
 
-interface Chat {
+// Define Chat type for use in props
+export interface Chat {
   id: string;
   title: string;
   createdAt: Timestamp;
   archived?: boolean;
+}
+
+interface SidebarProps {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+  colorScheme: string;
+  setColorScheme: (c: string) => void;
+  archivedChats: Chat[];
+  setArchivedChats: (c: Chat[]) => void;
+  theme: string;
+  setTheme: (t: string) => void;
 }
 
 const isDateInThisWeek = (date: Date) => {
@@ -58,10 +69,6 @@ const isDateInThisMonth = (date: Date) => {
 export function Sidebar({
   sidebarOpen,
   setSidebarOpen,
-  settingsOpen,
-  setSettingsOpen,
-  archivedOpen,
-  setArchivedOpen,
   colorScheme,
   setColorScheme,
   archivedChats,
@@ -71,14 +78,10 @@ export function Sidebar({
 }: {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
-  settingsOpen: boolean;
-  setSettingsOpen: (open: boolean) => void;
-  archivedOpen: boolean;
-  setArchivedOpen: (open: boolean) => void;
   colorScheme: string;
   setColorScheme: (c: string) => void;
-  archivedChats: any[];
-  setArchivedChats: (c: any[]) => void;
+  archivedChats: Chat[];
+  setArchivedChats: (c: Chat[]) => void;
   theme: string;
   setTheme: (t: string) => void;
 }) {
@@ -340,22 +343,7 @@ export function Sidebar({
           </div>
           {/* Options bar above profile section, not scrollable */}
           <div className="flex items-center justify-between px-4 py-2 border-t border-b bg-background dark:bg-zinc-900">
-            <button
-              className="px-3 py-1 rounded-md font-medium text-sm hover:bg-secondary transition-colors bg-background dark:bg-zinc-900 flex items-center justify-center mx-auto sidebar-archive-btn"
-              onClick={() => setArchivedOpen(true)}
-              aria-label="Archived"
-              title="Archived"
-            >
-              <Archive size={22} />
-            </button>
-            <button
-              className="px-3 py-1 rounded-md font-medium text-sm hover:bg-secondary transition-colors bg-background dark:bg-zinc-900 flex items-center justify-center mx-auto sidebar-settings-btn"
-              onClick={() => setSettingsOpen(true)}
-              aria-label="Settings"
-              title="Settings"
-            >
-              <SettingsIcon size={22} />
-            </button>
+            {/* Removed modal open buttons here */}
           </div>
           {user && (
             <div className="p-2 border-t flex items-center justify-between">

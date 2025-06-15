@@ -19,6 +19,14 @@ import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+// Define Chat type for archived chats
+export interface Chat {
+  id: string;
+  title: string;
+  createdAt: any; // Use Timestamp if imported, or Date if converted
+  archived?: boolean;
+}
+
 export function ChatContainer() {
   const { user, loading: authLoading } = useAuth();
   const params = useParams();
@@ -31,7 +39,7 @@ export function ChatContainer() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [archivedOpen, setArchivedOpen] = useState(false);
   const [colorScheme, setColorScheme] = useState("lilac");
-  const [archivedChats, setArchivedChats] = useState<Message[]>([]); // Adjust type if needed
+  const [archivedChats, setArchivedChats] = useState<Chat[]>([]); // Adjust type if needed
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -136,10 +144,6 @@ export function ChatContainer() {
       <Sidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
-        settingsOpen={settingsOpen}
-        setSettingsOpen={setSettingsOpen}
-        archivedOpen={archivedOpen}
-        setArchivedOpen={setArchivedOpen}
         colorScheme={colorScheme}
         setColorScheme={setColorScheme}
         archivedChats={archivedChats}
