@@ -267,16 +267,15 @@ export function Sidebar({
     );
 
   if (collapsed) {
+    // Only show the small expand button, not the big one
     return (
-      <div className="fixed top-2 left-2 z-50">
-        <button
-          className="p-2 rounded-lg bg-muted border shadow hover:bg-secondary"
-          onClick={() => setCollapsed(false)}
-          aria-label="Expand sidebar"
-        >
-          <ChevronRight size={20} />
-        </button>
-      </div>
+      <button
+        className="fixed top-2 left-2 z-50 p-2 rounded-lg bg-muted border shadow hover:bg-secondary"
+        onClick={() => setCollapsed(false)}
+        aria-label="Expand sidebar"
+      >
+        <ChevronRight size={20} />
+      </button>
     );
   }
 
@@ -284,14 +283,15 @@ export function Sidebar({
   return (
     <>
       {/* Hamburger menu for mobile */}
-      <button
-        className="fixed top-3 left-3 z-40 md:hidden p-2 rounded-lg bg-primary text-primary-foreground shadow-lg"
-        onClick={() => setSidebarOpen(true)}
-        aria-label="Open sidebar"
-        style={{ display: sidebarOpen ? "none" : "block" }}
-      >
-        <ChevronRight size={24} />
-      </button>
+      {!sidebarOpen && (
+        <button
+          className="fixed top-3 left-3 z-40 md:hidden p-2 rounded-lg bg-primary text-primary-foreground shadow-lg"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open sidebar"
+        >
+          <ChevronRight size={24} />
+        </button>
+      )}
       {/* Sidebar overlay */}
       <div
         className={`fixed inset-0 z-40 bg-black/40 transition-opacity duration-200 md:hidden ${
@@ -312,13 +312,6 @@ export function Sidebar({
         aria-label="Sidebar"
       >
         {/* Close button for mobile */}
-        <button
-          className="absolute top-3 right-3 z-50 md:hidden p-2 rounded-lg bg-muted text-foreground shadow-lg"
-          onClick={() => setSidebarOpen(false)}
-          aria-label="Close sidebar"
-        >
-          <ChevronLeft size={24} />
-        </button>
         <div className="flex flex-col h-full w-64 bg-muted/50 border-r transition-all duration-200">
           <div className="flex items-center justify-between p-2 border-b">
             <Link
@@ -342,20 +335,22 @@ export function Sidebar({
             {renderChatList("Older", olderChats)}
           </div>
           {/* Options bar above profile section, not scrollable */}
-          <div className="flex items-center justify-between px-4 py-2 border-t border-b bg-background dark:bg-zinc-900">
+          <div className="flex items-center justify-center gap-20 py-2 border-t border-b bg-background dark:bg-zinc-900">
             <button
-              className="flex items-center gap-2 text-sm hover:text-primary"
+              className="flex items-center justify-center p-3 rounded-full hover:bg-secondary transition"
               onClick={() => setArchivedOpen(true)}
               title="View archived chats"
+              aria-label="View archived chats"
             >
-              <Archive size={16} /> Archived
+              <Archive size={20} />
             </button>
             <button
-              className="flex items-center gap-2 text-sm hover:text-primary"
+              className="flex items-center justify-center p-3 rounded-full hover:bg-secondary transition"
               onClick={() => setSettingsOpen(true)}
               title="Settings"
+              aria-label="Settings"
             >
-              <SettingsIcon size={16} /> Settings
+              <SettingsIcon size={20} />
             </button>
           </div>
           {user && (
