@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { SettingsPanel } from "./SettingsPanel";
 
 // Define Chat type for use in props
 export interface Chat {
@@ -47,6 +48,10 @@ interface SidebarProps {
   setArchivedChats: (c: Chat[]) => void;
   theme: string;
   setTheme: (t: string) => void;
+  settingsOpen: boolean;
+  setSettingsOpen: (open: boolean) => void;
+  archivedOpen: boolean;
+  setArchivedOpen: (open: boolean) => void;
 }
 
 const isDateInThisWeek = (date: Date) => {
@@ -75,16 +80,11 @@ export function Sidebar({
   setArchivedChats,
   theme,
   setTheme,
-}: {
-  sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
-  colorScheme: string;
-  setColorScheme: (c: string) => void;
-  archivedChats: Chat[];
-  setArchivedChats: (c: Chat[]) => void;
-  theme: string;
-  setTheme: (t: string) => void;
-}) {
+  settingsOpen,
+  setSettingsOpen,
+  archivedOpen,
+  setArchivedOpen,
+}: SidebarProps) {
   const { user, signOut } = useAuth();
   const [chats, setChats] = useState<Chat[]>([]);
   const pathname = usePathname();
@@ -343,7 +343,20 @@ export function Sidebar({
           </div>
           {/* Options bar above profile section, not scrollable */}
           <div className="flex items-center justify-between px-4 py-2 border-t border-b bg-background dark:bg-zinc-900">
-            {/* Removed modal open buttons here */}
+            <button
+              className="flex items-center gap-2 text-sm hover:text-primary"
+              onClick={() => setArchivedOpen(true)}
+              title="View archived chats"
+            >
+              <Archive size={16} /> Archived
+            </button>
+            <button
+              className="flex items-center gap-2 text-sm hover:text-primary"
+              onClick={() => setSettingsOpen(true)}
+              title="Settings"
+            >
+              <SettingsIcon size={16} /> Settings
+            </button>
           </div>
           {user && (
             <div className="p-2 border-t flex items-center justify-between">
@@ -384,6 +397,68 @@ export function Sidebar({
           )}
         </div>
       </aside>
+      {/* Archived Chats Modal */}
+      {archivedOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="w-full max-w-md bg-background dark:bg-zinc-900 rounded-2xl shadow-lg p-6 m-4 border max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold">Archived Chats</h2>
+              <button
+                onClick={() => setArchivedOpen(false)}
+                className="text-muted-foreground hover:text-foreground text-xl"
+              >
+                ×
+              </button>
+            </div>
+            {archivedChats.length === 0 ? (
+              <div className="text-muted-foreground text-center py-8">
+                No archived chats.
+              </div>
+            ) : (
+              <ul className="space-y-2">
+                {archivedChats.map((chat: Chat) => (
+                  <li
+                    key={chat.id}
+                    className="flex items-center justify-between"
+                  >
+                    <a
+                      href={`/c/${chat.id}`}
+                      className="block px-4 py-2 text-sm rounded-lg truncate flex-1 hover:bg-secondary"
+                    >
+                      {chat.title}
+                    </a>
+                    <button
+                      className="ml-2 text-xs text-muted-foreground hover:text-primary flex items-center justify-center"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        const { updateDoc, doc } = await import(
+                          "firebase/firestore"
+                        );
+                        await updateDoc(doc(db, "chats", chat.id), {
+                          archived: false,
+                        });
+                      }}
+                      title="Unarchive"
+                      aria-label="Unarchive"
+                    >
+                      <ArchiveRestore size={20} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+      {/* Settings Panel Modal */}
+      <SettingsPanel
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        theme={theme}
+        setTheme={setTheme}
+        colorScheme={colorScheme}
+        setColorScheme={setColorScheme}
+      />
     </>
   );
 }

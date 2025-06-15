@@ -4,7 +4,6 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { LoginPage } from "@/components/LoginPage";
 import { Sidebar } from "@/components/Sidebar";
 import { ChatInterface, Message } from "@/components/ChatInterface";
-import { SettingsPanel } from "@/components/SettingsPanel";
 import { db } from "@/lib/firebase";
 import {
   collection,
@@ -150,6 +149,10 @@ export function ChatContainer() {
         setArchivedChats={setArchivedChats}
         theme={theme || "light"}
         setTheme={setTheme}
+        settingsOpen={settingsOpen}
+        setSettingsOpen={setSettingsOpen}
+        archivedOpen={archivedOpen}
+        setArchivedOpen={setArchivedOpen}
       />
       <main className="flex-1">
         {error ? (
@@ -164,80 +167,6 @@ export function ChatContainer() {
           />
         )}
       </main>
-      <SettingsPanel
-        open={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        theme={theme || "light"}
-        setTheme={setTheme}
-        colorScheme={colorScheme}
-        setColorScheme={setColorScheme}
-      />
-      {archivedOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-          <div className="w-full max-w-md bg-background dark:bg-zinc-900 rounded-2xl shadow-lg p-6 m-4 border max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Archived Chats</h2>
-              <button
-                onClick={() => setArchivedOpen(false)}
-                className="text-muted-foreground hover:text-foreground text-xl"
-              >
-                ×
-              </button>
-            </div>
-            {archivedChats.length === 0 ? (
-              <div className="text-muted-foreground text-center py-8">
-                No archived chats.
-              </div>
-            ) : (
-              <ul className="space-y-2">
-                {archivedChats.map((chat: any) => (
-                  <li
-                    key={chat.id}
-                    className="flex items-center justify-between"
-                  >
-                    <a
-                      href={`/c/${chat.id}`}
-                      className="block px-4 py-2 text-sm rounded-lg truncate flex-1 hover:bg-secondary"
-                    >
-                      {chat.title}
-                    </a>
-                    <button
-                      className="ml-2 text-xs text-muted-foreground hover:text-primary flex items-center justify-center"
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        // Unarchive chat
-                        const { updateDoc, doc } = await import(
-                          "firebase/firestore"
-                        );
-                        await updateDoc(doc(db, "chats", chat.id), {
-                          archived: false,
-                        });
-                      }}
-                      title="Unarchive"
-                      aria-label="Unarchive"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 9l5 5 5-5"
-                        />
-                      </svg>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
