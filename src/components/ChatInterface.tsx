@@ -17,7 +17,6 @@ import {
   updateDoc,
   setDoc,
   getDocs,
-  DocumentData,
 } from "firebase/firestore";
 import { OptionsMenu } from "./OptionsMenu";
 
@@ -254,32 +253,48 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
       return;
     }
     const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
+      (
+        window as typeof window & {
+          SpeechRecognition?: unknown;
+          webkitSpeechRecognition?: unknown;
+        }
+      ).SpeechRecognition ||
+      (
+        window as typeof window & {
+          SpeechRecognition?: unknown;
+          webkitSpeechRecognition?: unknown;
+        }
+      ).webkitSpeechRecognition;
+    const recognition = new (SpeechRecognition as any)();
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
     setIsListening(true);
     micEnableAudio.current?.play();
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
+    recognition.onresult = (event: unknown) => {
+      // event: SpeechRecognitionEvent
+      const resultEvent = event as {
+        results: { 0: { 0: { transcript: string } } };
+      };
+      const transcript = resultEvent.results[0][0].transcript;
       setInput((prev) => prev + (prev ? " " : "") + transcript);
       setIsListening(false);
       micDisableAudio.current?.play();
     };
-    recognition.onerror = (event: any) => {
-      if (event.error === "no-speech") {
+    recognition.onerror = (event: unknown) => {
+      // event: SpeechRecognitionErrorEvent
+      const errorEvent = event as { error?: string };
+      if (errorEvent.error === "no-speech") {
         setIsListening(false);
         micDisableAudio.current?.play();
         return;
       }
-      if (event.error === "aborted") {
+      if (errorEvent.error === "aborted") {
         setIsListening(false);
         micDisableAudio.current?.play();
         return;
       }
-      alert("Speech recognition error: " + event.error);
+      alert("Speech recognition error: " + errorEvent.error);
       setIsListening(false);
       micDisableAudio.current?.play();
     };
@@ -471,7 +486,7 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
-                      code({ node, className, children, ...props }) {
+                      code({ className, children, ...props }) {
                         const match = /language-(\w+)/.exec(className || "");
                         const isInline = !match;
                         if (isInline) {
@@ -583,7 +598,9 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSubmit(e as any);
+                  handleSubmit(
+                    e as unknown as React.FormEvent<HTMLFormElement>
+                  );
                 }
               }}
               disabled={isPending}
@@ -667,14 +684,6 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
       {/* Add prominent waveform pulse animation */}
     </div>
   );
-}
-
-// Helper for random RGB glow
-function randomRGBGlow() {
-  const r = Math.floor(180 + Math.random() * 75);
-  const g = Math.floor(180 + Math.random() * 75);
-  const b = Math.floor(180 + Math.random() * 75);
-  return `rgb(${r},${g},${b})`;
 }
 
 // Helper for code block copy

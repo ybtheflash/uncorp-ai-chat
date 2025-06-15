@@ -1,11 +1,8 @@
 "use client";
 import { useAuth } from "./providers/AuthProvider";
-import { useState } from "react";
 
 export function LoginPage() {
   const { signInWithGoogle } = useAuth();
-  const [showVideo, setShowVideo] = useState(false);
-  const [videoVisible, setVideoVisible] = useState(false);
 
   // Play video and fade in/out on login
   const handleLogin = async () => {

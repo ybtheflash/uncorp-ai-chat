@@ -131,16 +131,19 @@ export function SettingsPanel({
       onClose();
     } catch (err) {
       setDeleting(false);
+      const errorObj = err as { code?: string; message?: string };
       if (
-        err &&
-        typeof err === "object" &&
-        (err as any).code === "auth/requires-recent-login"
+        errorObj &&
+        typeof errorObj === "object" &&
+        errorObj.code === "auth/requires-recent-login"
       ) {
         alert(
           "For security, please log out and log in again, then try deleting your account."
         );
       } else {
-        alert("Failed to delete account: " + (err as any)?.message);
+        alert(
+          "Failed to delete account: " + (errorObj?.message ?? "Unknown error")
+        );
       }
     }
   }

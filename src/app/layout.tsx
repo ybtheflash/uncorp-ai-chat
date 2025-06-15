@@ -1,21 +1,9 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css"; // Assuming globals.css is in src/app/
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { AuthProvider } from "@/components/providers/AuthProvider";
-import {
-  ColorSchemeProvider,
-  useColorSchemeFromCookie,
-} from "@/components/providers/ColorSchemeProvider";
+import "./globals.css";
 import ClientLayout from "./ClientLayout";
 import LoadVideoOverlay from "./LoadVideoOverlay";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "UnCorp AI Chat",
-  description: "A secure, personal chat interface for Gemini 1.5 Pro",
-};
 
 export default function RootLayout({
   children,
@@ -24,6 +12,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* SVG favicon for modern browsers */}
+        <link rel="icon" type="image/svg+xml" href="/smirk.svg" />
+        {/* fallback for browsers that don't support SVG favicons */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <title>UnCorp AI Chat</title>
+        <meta
+          name="description"
+          content="A secure, personal chat interface for Gemini 2.0 Flash"
+        />
+      </head>
       <body
         className={`${inter.className} bg-background text-foreground font-sans antialiased`}
       >

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import Cookies from "js-cookie";
 
@@ -7,11 +7,10 @@ export default function LoadVideoOverlay() {
   const { user, loading } = useAuth();
   const [show, setShow] = useState(false);
   const [visible, setVisible] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const playedRef = useRef(false);
+  const [played, setPlayed] = useState(false); // Remove playedRef, use state instead
 
   useEffect(() => {
-    if (!loading && user && !playedRef.current) {
+    if (!loading && user && !played) {
       // Only play if NOT on the login page
       if (
         (window.location.pathname === "/" ||
@@ -21,7 +20,7 @@ export default function LoadVideoOverlay() {
         setShow(true);
         setTimeout(() => setVisible(true), 10);
         setTimeout(() => {
-          playedRef.current = true;
+          setPlayed(true);
         }, 100);
         setTimeout(() => {
           setVisible(false);
@@ -30,7 +29,7 @@ export default function LoadVideoOverlay() {
         Cookies.set("uncorp_load_shown", "1", { expires: 1 / 48 }); // 30 min expiry
       }
     }
-  }, [user, loading]);
+  }, [user, loading, played]);
 
   if (!show) return null;
   return (

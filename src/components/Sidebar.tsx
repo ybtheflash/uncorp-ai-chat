@@ -64,7 +64,7 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const router = useRouter();
   const [hasRedirected, setHasRedirected] = useState(false);
-  const prevUserRef = useRef<any>(null);
+  const prevUserRef = useRef<string | null>(null);
   const [chatsLoaded, setChatsLoaded] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [colorScheme, setColorScheme] = useState(() => {
@@ -154,7 +154,7 @@ export function Sidebar() {
       setHasRedirected(true);
       router.push("/");
     }
-    prevUserRef.current = user;
+    prevUserRef.current = user ? user.uid : null;
   }, [user, pathname, hasRedirected, router, chats.length, chatsLoaded]);
 
   // Load user theme preferences on login
@@ -314,10 +314,11 @@ export function Sidebar() {
       </div>
       {user && (
         <div className="p-2 border-t flex items-center justify-between">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={user.photoURL || ""}
             alt={user.displayName || "User"}
-            className="w-8 h-8 rounded-full"
+            className="w-8 h-8 rounded-full border border-muted shadow"
           />
           <span className="text-sm font-medium truncate">
             {user.displayName}

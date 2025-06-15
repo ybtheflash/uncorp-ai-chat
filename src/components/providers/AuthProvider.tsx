@@ -72,9 +72,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-    } catch (error: any) {
+    } catch (error) {
       // Only log unexpected errors, ignore cancelled-popup-request
-      if (error?.code !== "auth/cancelled-popup-request") {
+      if (
+        (error as { code?: string })?.code !== "auth/cancelled-popup-request"
+      ) {
         // eslint-disable-next-line no-console
         console.error("Error signing in with Google: ", error);
       }

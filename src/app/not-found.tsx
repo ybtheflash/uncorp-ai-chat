@@ -1,5 +1,6 @@
 import * as React from "react";
 import { FaviconSmirk } from "../components/favicon";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -21,12 +22,12 @@ export default function NotFound() {
             If you think this is a mistake, try going back to the homepage.
           </div>
         </div>
-        <a
+        <Link
           href="/"
           className="mt-8 px-6 py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
         >
           Go Home
-        </a>
+        </Link>
       </div>
     </div>
   );
