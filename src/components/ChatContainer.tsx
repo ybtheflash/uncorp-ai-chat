@@ -12,17 +12,17 @@ import {
   onSnapshot,
   orderBy,
   query,
+  Timestamp,
 } from "firebase/firestore";
 import { Loader2 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
 // Define Chat type for archived chats
 export interface Chat {
   id: string;
   title: string;
-  createdAt: Date | string | { toDate: () => Date };
+  createdAt: Timestamp;
   archived?: boolean;
 }
 
