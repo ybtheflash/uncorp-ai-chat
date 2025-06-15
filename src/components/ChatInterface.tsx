@@ -37,9 +37,14 @@ export type Message = {
 interface ChatInterfaceProps {
   chatId: string | null;
   initialMessages: Message[];
+  sidebarOpen?: boolean;
 }
 
-export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
+export function ChatInterface({
+  chatId,
+  initialMessages,
+  sidebarOpen = false,
+}: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [files, setFiles] = useState<File[]>([]);
@@ -159,7 +164,9 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
           });
         }
         // 5. Navigate to the new chat page (after all above, so chatId is available)
-        router.push(`/c/${newChatRef.id}`);
+        if (!chatId) {
+          router.push(`/c/${newChatRef.id}`);
+        }
       } else {
         // This is the simpler flow for an existing chat
         const userMessage = {
@@ -280,9 +287,17 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
     recognition.start();
   };
 
-  // The rest of the JSX is unchanged and correct.
   return (
     <div className="flex flex-col h-full relative">
+      {/* Dim overlay when sidebar is open on mobile */}
+      <div
+        className={`fixed inset-0 z-30 bg-black/40 transition-opacity duration-200 md:hidden ${
+          sidebarOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+        aria-hidden="true"
+      />
       {/* Options button on the top right, always visible */}
       <div className="absolute top-4 right-4 z-20">
         <OptionsMenu

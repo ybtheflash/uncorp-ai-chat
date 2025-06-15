@@ -17,7 +17,7 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/smirk.svg" />
         {/* fallback for browsers that don't support SVG favicons */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <title>UnCorp AI Chat</title>
+        <title>UnCorp AI</title>
         <meta
           name="description"
           content="A secure, personal chat interface for Gemini 2.0 Flash"
