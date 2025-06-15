@@ -246,53 +246,30 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
   };
 
   const handleMicClick = () => {
-    if (
-      !("webkitSpeechRecognition" in window || "SpeechRecognition" in window)
-    ) {
+    const SpeechRecognitionConstructor = getSpeechRecognitionConstructor();
+    if (!SpeechRecognitionConstructor) {
       alert("Speech recognition is not supported in this browser.");
       return;
     }
-    // Use 'any' for recognition to avoid TS errors in all environments
-    let recognition: any;
-    if (typeof window !== "undefined") {
-      const SpeechRecognitionConstructor =
-        (window as any).SpeechRecognition ||
-        (window as any).webkitSpeechRecognition;
-      recognition = new SpeechRecognitionConstructor();
-    } else {
-      throw new Error(
-        "Speech recognition is not supported in this environment."
-      );
-    }
+    const recognition = new SpeechRecognitionConstructor();
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
     setIsListening(true);
     micEnableAudio.current?.play();
-    recognition.onresult = (event: unknown) => {
-      // event: SpeechRecognitionEvent
-      const resultEvent = event as {
-        results: { 0: { 0: { transcript: string } } };
-      };
-      const transcript = resultEvent.results[0][0].transcript;
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript;
       setInput((prev) => prev + (prev ? " " : "") + transcript);
       setIsListening(false);
       micDisableAudio.current?.play();
     };
-    recognition.onerror = (event: unknown) => {
-      // event: SpeechRecognitionErrorEvent
-      const errorEvent = event as { error?: string };
-      if (errorEvent.error === "no-speech") {
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      if (event.error === "no-speech" || event.error === "aborted") {
         setIsListening(false);
         micDisableAudio.current?.play();
         return;
       }
-      if (errorEvent.error === "aborted") {
-        setIsListening(false);
-        micDisableAudio.current?.play();
-        return;
-      }
-      alert("Speech recognition error: " + errorEvent.error);
+      alert("Speech recognition error: " + event.error);
       setIsListening(false);
       micDisableAudio.current?.play();
     };
@@ -596,9 +573,11 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSubmit(
-                    e as unknown as React.FormEvent<HTMLFormElement>
-                  );
+                  // Instead of casting, trigger the form's submit event programmatically
+                  const form = e.currentTarget.closest("form");
+                  if (form) {
+                    form.requestSubmit();
+                  }
                 }
               }}
               disabled={isPending}
@@ -711,4 +690,61 @@ function CodeBlockWithCopy({ children }: { children: React.ReactNode }) {
       </pre>
     </div>
   );
+}
+
+// Helper to get SpeechRecognition constructor safely
+export default function getSpeechRecognitionConstructor():
+  | SpeechRecognitionConstructor
+  | undefined {
+  if (typeof window === "undefined") return undefined;
+  return (
+    (
+      window as typeof window & {
+        SpeechRecognition?: SpeechRecognitionConstructor;
+        webkitSpeechRecognition?: SpeechRecognitionConstructor;
+      }
+    ).SpeechRecognition ||
+    (
+      window as typeof window & {
+        SpeechRecognition?: SpeechRecognitionConstructor;
+        webkitSpeechRecognition?: SpeechRecognitionConstructor;
+      }
+    ).webkitSpeechRecognition
+  );
+}
+
+// Add minimal Web Speech API types if not present
+type SpeechRecognitionConstructor = new () => SpeechRecognition;
+interface SpeechRecognition extends EventTarget {
+  lang: string;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onresult:
+    | ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => void)
+    | null;
+  onerror:
+    | ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => void)
+    | null;
+  onend: ((this: SpeechRecognition, ev: Event) => void) | null;
+  start(): void;
+  stop(): void;
+}
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+interface SpeechRecognitionResultList {
+  length: number;
+  [index: number]: SpeechRecognitionResult;
+}
+interface SpeechRecognitionResult {
+  length: number;
+  isFinal: boolean;
+  [index: number]: SpeechRecognitionAlternative;
+}
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
 }

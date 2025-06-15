@@ -86,7 +86,7 @@ export function Sidebar() {
     if (user) {
       setChatsLoaded(true);
     }
-  }, [chats]);
+  }, [chats, user]);
 
   // --- THE FIX IS HERE ---
   useEffect(() => {

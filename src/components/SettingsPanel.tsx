@@ -187,6 +187,7 @@ export function SettingsPanel({
                         <span
                           key={i}
                           className={`w-5 h-5 rounded-full border border-muted color-dot color-dot-${scheme.key}-${i}`}
+                          style={{ background: color }}
                         />
                       ))}
                     </div>

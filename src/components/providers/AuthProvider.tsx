@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (
         (error as { code?: string })?.code !== "auth/cancelled-popup-request"
       ) {
-        // eslint-disable-next-line no-console
         console.error("Error signing in with Google: ", error);
       }
     }
