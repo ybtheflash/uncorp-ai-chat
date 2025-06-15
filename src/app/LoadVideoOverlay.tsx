@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/providers/AuthProvider";
 import Cookies from "js-cookie";
+import Image from "next/image";
 
 export default function LoadVideoOverlay() {
   const { user, loading } = useAuth();
@@ -38,10 +39,13 @@ export default function LoadVideoOverlay() {
         visible ? "opacity-100" : "opacity-0"
       } load-video-overlay`}
     >
-      <img
+      <Image
         src="/load.gif"
+        width={256}
+        height={256}
         className="w-64 h-64 object-contain rounded-xl shadow-2xl border-4 border-white load-video"
         alt="Loading animation"
+        priority
       />
     </div>
   );

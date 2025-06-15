@@ -100,7 +100,7 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
 
     const currentInput = input;
     const currentFiles = files;
-    let currentChatId = chatId;
+    const currentChatId = chatId;
 
     // Optimistically add the user's message to the UI immediately
     setMessages((prev) => [
@@ -252,20 +252,18 @@ export function ChatInterface({ chatId, initialMessages }: ChatInterfaceProps) {
       alert("Speech recognition is not supported in this browser.");
       return;
     }
-    const SpeechRecognition =
-      (
-        window as typeof window & {
-          SpeechRecognition?: unknown;
-          webkitSpeechRecognition?: unknown;
-        }
-      ).SpeechRecognition ||
-      (
-        window as typeof window & {
-          SpeechRecognition?: unknown;
-          webkitSpeechRecognition?: unknown;
-        }
-      ).webkitSpeechRecognition;
-    const recognition = new (SpeechRecognition as any)();
+    // Use 'any' for recognition to avoid TS errors in all environments
+    let recognition: any;
+    if (typeof window !== "undefined") {
+      const SpeechRecognitionConstructor =
+        (window as any).SpeechRecognition ||
+        (window as any).webkitSpeechRecognition;
+      recognition = new SpeechRecognitionConstructor();
+    } else {
+      throw new Error(
+        "Speech recognition is not supported in this environment."
+      );
+    }
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
