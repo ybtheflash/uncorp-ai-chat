@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 export interface Chat {
   id: string;
   title: string;
-  createdAt: any; // Use Timestamp if imported, or Date if converted
+  createdAt: Date | string | { toDate: () => Date };
   archived?: boolean;
 }
 
