@@ -237,12 +237,7 @@ export function Sidebar() {
               </Link>
               {archived && (
                 <button
-                  className="ml-2 text-xs text-muted-foreground hover:text-primary flex items-center justify-center"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                  className="ml-2 text-xs text-muted-foreground hover:text-primary flex items-center justify-center sidebar-unarchive-btn"
                   onClick={async (e) => {
                     e.preventDefault();
                     await updateDoc(doc(db, "chats", chat.id), {
@@ -301,28 +296,18 @@ export function Sidebar() {
       {/* Options bar above profile section, not scrollable */}
       <div className="flex items-center justify-between px-4 py-2 border-t border-b bg-background dark:bg-zinc-900">
         <button
-          className="px-3 py-1 rounded-md font-medium text-sm hover:bg-secondary transition-colors bg-background dark:bg-zinc-900 flex items-center justify-center mx-auto"
+          className="px-3 py-1 rounded-md font-medium text-sm hover:bg-secondary transition-colors bg-background dark:bg-zinc-900 flex items-center justify-center mx-auto sidebar-archive-btn"
           onClick={() => setArchivedOpen(true)}
           aria-label="Archived"
           title="Archived"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
         >
           <Archive size={22} />
         </button>
         <button
-          className="px-3 py-1 rounded-md font-medium text-sm hover:bg-secondary transition-colors bg-background dark:bg-zinc-900 flex items-center justify-center mx-auto"
+          className="px-3 py-1 rounded-md font-medium text-sm hover:bg-secondary transition-colors bg-background dark:bg-zinc-900 flex items-center justify-center mx-auto sidebar-settings-btn"
           onClick={() => setSettingsOpen(true)}
           aria-label="Settings"
           title="Settings"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
         >
           <SettingsIcon size={22} />
         </button>

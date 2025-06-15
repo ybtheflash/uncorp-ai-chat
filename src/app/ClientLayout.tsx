@@ -5,6 +5,7 @@ import {
   ColorSchemeProvider,
   useColorSchemeFromCookie,
 } from "@/components/providers/ColorSchemeProvider";
+import LoadVideoOverlay from "./LoadVideoOverlay";
 
 export default function ClientLayout({
   children,
@@ -16,6 +17,7 @@ export default function ClientLayout({
     <AuthProvider>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <ColorSchemeProvider colorScheme={colorScheme} theme={theme}>
+          <LoadVideoOverlay />
           {children}
         </ColorSchemeProvider>
       </ThemeProvider>

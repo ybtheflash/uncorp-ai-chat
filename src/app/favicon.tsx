@@ -1,7 +1,7 @@
 import * as React from "react";
 
-// This component renders the smirk logo SVG, with theme-aware coloring via CSS variables
-export function FaviconSmirk({
+// Theme-aware Smirk logo for favicon or branding
+export default function FaviconSmirk({
   className = "",
   ...props
 }: React.SVGProps<SVGSVGElement>) {
@@ -131,5 +131,3 @@ export function FaviconSmirk({
     </svg>
   );
 }
-
-export default FaviconSmirk;

@@ -349,4 +349,65 @@
     box-shadow: 0 0 0 2px hsl(var(--ring));
     transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
   }
+  .load-video-overlay {
+    background: rgba(0, 0, 0, 0.85); /* much more dim */
+  }
+  .load-video {
+    filter: brightness(0.7);
+  }
+
+  /* Color dots for settings panel */
+  .color-dot-lilac-0 {
+    background: #b39ddb;
+  }
+  .color-dot-lilac-1 {
+    background: #9575cd;
+  }
+  .color-dot-lilac-2 {
+    background: #7e57c2;
+  }
+  .color-dot-blue-0 {
+    background: #64b5f6;
+  }
+  .color-dot-blue-1 {
+    background: #1976d2;
+  }
+  .color-dot-blue-2 {
+    background: #0d47a1;
+  }
+  .color-dot-lightblue-0 {
+    background: #b3e5fc;
+  }
+  .color-dot-lightblue-1 {
+    background: #4fc3f7;
+  }
+  .color-dot-lightblue-2 {
+    background: #0288d1;
+  }
+  .color-dot-dark-0 {
+    background: #22223b;
+  }
+  .color-dot-dark-1 {
+    background: #4a4e69;
+  }
+  .color-dot-dark-2 {
+    background: #9a8c98;
+  }
+  .color-dot-amoled-0 {
+    background: #000000;
+  }
+  .color-dot-amoled-1 {
+    background: #222222;
+  }
+  .color-dot-amoled-2 {
+    background: #333333;
+  }
+
+  .sidebar-unarchive-btn,
+  .sidebar-archive-btn,
+  .sidebar-settings-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

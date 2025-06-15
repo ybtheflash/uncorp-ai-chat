@@ -8,6 +8,7 @@ import {
   useColorSchemeFromCookie,
 } from "@/components/providers/ColorSchemeProvider";
 import ClientLayout from "./ClientLayout";
+import LoadVideoOverlay from "./LoadVideoOverlay";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,10 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-background text-foreground font-sans antialiased`}
       >
-        <ClientLayout>{children}</ClientLayout>
+        <ClientLayout>
+          <LoadVideoOverlay />
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );

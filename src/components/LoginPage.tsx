@@ -1,10 +1,21 @@
 "use client";
 import { useAuth } from "./providers/AuthProvider";
+import { useState } from "react";
 
 export function LoginPage() {
   const { signInWithGoogle } = useAuth();
+  const [showVideo, setShowVideo] = useState(false);
+  const [videoVisible, setVideoVisible] = useState(false);
+
+  // Play video and fade in/out on login
+  const handleLogin = async () => {
+    signInWithGoogle();
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4 text-white">
+      {/* Video Overlay */}
+      {/* (Removed video overlay logic) */}
       {/* Card Container */}
       <div className="bg-slate-800/50 backdrop-blur-md p-8 sm:p-10 rounded-xl shadow-2xl border border-slate-700 max-w-md w-full transform transition-all duration-300 hover:shadow-slate-700/60">
         {/* Logo or App Name (Optional) */}
@@ -16,7 +27,7 @@ export function LoginPage() {
 
         {/* Sign-in Button */}
         <button
-          onClick={signInWithGoogle}
+          onClick={handleLogin}
           className="w-full bg-sky-500 hover:bg-sky-600 text-white py-3.5 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-3 text-lg font-semibold shadow-lg hover:shadow-sky-500/40 focus:outline-none focus:ring-4 focus:ring-sky-400 focus:ring-opacity-50 active:scale-95"
         >
           <svg className="w-6 h-6" viewBox="0 0 48 48">

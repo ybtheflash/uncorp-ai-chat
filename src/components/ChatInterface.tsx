@@ -690,7 +690,7 @@ function CodeBlockWithCopy({ children }: { children: React.ReactNode }) {
     }
   };
   return (
-    <div style={{ position: "relative" }}>
+    <div className="relative">
       <pre ref={preRef}>
         {children}
         <button

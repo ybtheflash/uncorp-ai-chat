@@ -4,6 +4,7 @@ import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { useAuth } from "./providers/AuthProvider";
 import { useEffect, useState } from "react";
 import { Palette, Sun, Moon } from "lucide-react";
+import { FaviconSmirk } from "./favicon";
 
 const colorSchemes = [
   {
@@ -151,9 +152,12 @@ export function SettingsPanel({
         {activeSection === "main" && (
           <>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold flex items-center gap-2">
-                <Palette size={20} /> Theme Options
-              </h2>
+              <div className="flex items-center gap-2">
+                <FaviconSmirk className="w-7 h-7 mr-2" />
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                  <Palette size={20} /> Theme Options
+                </h2>
+              </div>
               <button
                 onClick={onClose}
                 className="text-muted-foreground hover:text-foreground text-xl"
@@ -179,8 +183,7 @@ export function SettingsPanel({
                       {scheme.colors.map((color, i) => (
                         <span
                           key={i}
-                          className="w-5 h-5 rounded-full border border-muted"
-                          style={{ background: color }}
+                          className={`w-5 h-5 rounded-full border border-muted color-dot color-dot-${scheme.key}-${i}`}
                         />
                       ))}
                     </div>
@@ -267,7 +270,8 @@ export function SettingsPanel({
               >
                 YBTHEFLASH
               </a>
-              .<br />
+              .
+              <br />
               <a
                 href="https://ybtheflash.in"
                 target="_blank"
