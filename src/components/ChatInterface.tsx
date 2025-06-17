@@ -142,15 +142,8 @@ export function ChatInterface({
               name: f.name,
               type: f.type,
             })),
-          }),
-        });
-        // 3. Summarize and update the chat title (async, does not block)
-        getFiveWordSummary(currentInput).then(async (summary) => {
-          if (summary) {
-            await updateDoc(newChatRef, { title: summary });
-          }
-        });
-        // 4. Trigger the AI response to the user's first message
+          }),        });
+        // 3. Trigger the AI response to the user's first message
         const conversation = [{ role: "user" as const, content: currentInput }];
         const result = await generateGeminiResponse(
           conversation,
@@ -161,6 +154,12 @@ export function ChatInterface({
             role: "model" as const,
             content: result.text,
             createdAt: new Date(),
+          });
+          // 4. Generate chat title from AI's first response (async, does not block)
+          getFiveWordSummary(result.text).then(async (summary) => {
+            if (summary) {
+              await updateDoc(newChatRef, { title: summary });
+            }
           });
         }
         // 5. Navigate to the new chat page (after all above, so chatId is available)
