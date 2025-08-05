@@ -1,89 +1,125 @@
-Uncorp AI Chat: Your Secure, Private Gateway to Google Gemini
-A secure and feature-rich web client for Google Gemini, designed specifically to be deployed as a proxied alternative for users on corporate networks where official AI websites are often blocked. Uncorp AI Chat provides a familiar, enhanced chat experience with a steadfast commitment to user privacy and a unique, custom-built interface.
+# Uncorp AI Chat: Your Secure, Private Gateway to Google Gemini
 
-🚀 The Problem
-In many corporate environments, access to powerful AI tools like Google Gemini is restricted by network firewalls. This limits the ability of developers, researchers, and other professionals to leverage these cutting-edge models for their work. Furthermore, users are rightly concerned about how their data is stored and used.
+**Uncorp AI Chat** is a secure, feature-rich web client for Google Gemini, designed to be deployed as a proxied alternative in corporate networks where access to official AI tools is restricted. It offers an enhanced chat experience with strong privacy protections and a custom-built interface.
 
-✅ The Solution
-Uncorp AI Chat acts as a self-hostable, secure gateway. By deploying this application on a permitted domain, users can proxy requests to the Gemini API through a secure backend.
+🔗 **Live Demo:** https://uncorp.vercel.app/ — *Just sign in with Google and start chatting!*
+---
 
-It solves the core problems of access and privacy by:
+## 🚀 The Problem
 
-Bypassing firewalls that block direct access to AI services.
+In many corporate environments, powerful AI tools like **Google Gemini** are blocked by firewalls. This restricts developers, researchers, and other professionals from accessing the tools they need. On top of that, there are legitimate concerns around how user data is stored and used.
 
-Ensuring data privacy by securely storing your chat history for your convenience. This data is never shared.
+---
 
-Providing secure authentication through standard Google OAuth, which you already trust.
+## ✅ The Solution
 
-✨ Features
-Bypass Corporate Restrictions: Provides a reliable way to access Google Gemini's capabilities from within a restricted network.
+**Uncorp AI Chat** provides a self-hostable, secure gateway to Google Gemini. It works by proxying requests through a secure backend hosted on an approved domain.
 
-Simple & Secure Authentication: One-click login with your Google account. No separate passwords to manage.
+It solves the core issues of access and privacy by:
 
-Secure Chat History: Your conversations are securely stored for your convenience and are never shared. You retain full control, with easy, one-click account deletion.
+* **Bypassing firewalls** that block direct access to AI services.
+* **Ensuring data privacy** by securely storing your chat history, which is never shared.
+* **Using secure authentication** via Google OAuth — no new credentials required.
 
-Direct Google Gemini Integration: Leverages the official Google AI SDK for high-quality, real-time streaming responses.
+---
 
-Unique Custom UI: A clean and modern interface built with custom styling and components.
+## ✨ Features
 
-Customizable Themes: Switch between different UI themes to suit your preference.
+* **Bypass Corporate Restrictions**
+  Seamlessly access Google Gemini from behind network firewalls.
 
-Easy to Self-Host: Deploy your own instance with a single click to Vercel.
+* **Simple & Secure Authentication**
+  One-click login using your existing Google account via NextAuth.js.
 
-🛠️ Tech Stack
-Framework: Next.js
+* **Private Chat History**
+  Conversations are securely stored and never shared. You can delete your account with a single click.
 
-AI: Google Gemini via @google/generative-ai
+* **Official Google Gemini Integration**
+  Built using the official `@google/generative-ai` SDK for high-quality, real-time streaming responses.
 
-Authentication: NextAuth.js
+* **Custom UI**
+  Clean, modern interface with custom-designed components.
 
-Language: TypeScript
+* **Theme Support**
+  Easily switch between UI themes to suit your preferences.
 
-Styling: Custom Styling with Tailwind CSS
+* **Self-Hosting Friendly**
+  Deploy your own instance with one click using platforms like Vercel.
 
-Icons: Lucide React
+---
 
-⚙️ Getting Started
-To get a local copy up and running, follow these simple steps.
+## 🛠️ Tech Stack
 
-Prerequisites
-You need to have Node.js and npm (or yarn/pnpm) installed on your machine.
+* **Framework:** Next.js
+* **AI:** Google Gemini via `@google/generative-ai`
+* **Authentication:** NextAuth.js
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS
+* **Icons:** Lucide React
 
-Node.js
+---
 
-1. Set Up Environment Variables
-You will need an API key for the Gemini API from Google AI Studio.
+## ⚙️ Getting Started
 
-First, copy the .env.example file to a new file named .env.local:
+To get a local instance running, follow these steps:
 
+### 1. Prerequisites
+
+Make sure you have the following installed:
+
+* [Node.js](https://nodejs.org/)
+* npm, yarn, or pnpm
+
+---
+
+### 2. Set Up Environment Variables
+
+You'll need:
+
+* A Gemini API key from [Google AI Studio](https://aistudio.google.com/)
+* Google OAuth credentials from [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+
+#### Steps:
+
+```bash
+# Copy the example environment file
 cp .env.example .env.local
+```
 
-Next, open .env.local and add your Google Gemini API key. You will also need to set up Google OAuth credentials for NextAuth.js.
+Edit `.env.local` and add your credentials:
 
-# Get your Gemini key from https://aistudio.google.com/
-GOOGLE_API_KEY="your-gemini-api-key-here"
+```env
+# Gemini API Key
+GOOGLE_API_KEY="your-gemini-api-key"
 
-# For Google Login (NextAuth.js)
-# Get credentials from https://console.cloud.google.com/apis/credentials
+# Google OAuth (for NextAuth.js)
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
-NEXTAUTH_SECRET="generate-a-secret-key" # You can generate one with `openssl rand -base64 32`
 
-2. Installation & Running the App
-Clone the repo
+# NextAuth secret key (generate using: openssl rand -base64 32)
+NEXTAUTH_SECRET="your-generated-secret"
+```
 
+---
+
+### 3. Install & Run
+
+```bash
+# Clone the repository
 git clone https://github.com/ybtheflash/uncorp-ai-chat.git
 
-Navigate to the project directory
-
+# Navigate to the project directory
 cd uncorp-ai-chat
 
-Install NPM packages
-
+# Install dependencies
 npm install
 
-Run the development server
-
+# Run the development server
 npm run dev
+```
 
-Open http://localhost:3000 with your browser to see the result!
+Visit [http://localhost:3000](http://localhost:3000) in your browser to start using Uncorp AI Chat.
+
+---
+
+Let me know if you'd like a version with badges, a license section, or a deployment guide!
