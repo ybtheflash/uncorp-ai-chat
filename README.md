@@ -122,5 +122,3 @@ npm run dev
 Visit [http://localhost:3000](http://localhost:3000) in your browser to start using Uncorp AI Chat.
 
 ---
-
-Let me know if you'd like a version with badges, a license section, or a deployment guide!
