@@ -3,6 +3,7 @@
 **Uncorp AI Chat** is a secure, feature-rich web client for Google Gemini, designed to be deployed as a proxied alternative in corporate networks where access to official AI tools is restricted. It offers an enhanced chat experience with strong privacy protections and a custom-built interface.
 
 🔗 **Live Demo:** https://uncorp.vercel.app/ — *Just sign in with Google and start chatting!*
+
 ---
 
 ## 🚀 The Problem
